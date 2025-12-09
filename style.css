@@ -1,0 +1,324 @@
+/* ===========================
+   Globale Variablen / Design
+   =========================== */
+:root {
+  /* Avatar / Logo: Auto */
+  --chat--avatar-size: 52px;
+  --chat--avatar-bg: #ffffff;
+  --chat--avatar-text-color: #000000;
+  --chat--avatar-initial: "🚗";
+  --chat--bot-avatar-size: 26px;
+  --chat--avatar-anim-duration: 4s;
+
+  /* Farben – Schwarz/Weiß */
+  --chat--color-primary: #000000;
+  --chat--color-secondary: #4a4a4a;
+  --chat--color-white: #ffffff;
+  --chat--color-light: #f7f7f7;
+  --chat--color-medium: #d2d4d9;
+  --chat--color-dark: #111111;
+  --chat--color-disabled: #d2d4d9;
+  --chat--color-typing: #555555;
+
+  /* Layout & Typo */
+  --chat--spacing: 1rem;
+  --chat--border-radius: 1rem;
+  --chat--transition-duration: 0.2s;
+  --chat--font-family: (
+    "Poppins",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen-Sans,
+    Ubuntu,
+    Cantarell,
+    "Helvetica Neue",
+    sans-serif
+  );
+
+  /* Fenster */
+  --chat--window--width: 420px;
+  --chat--window--height: 620px;
+  --chat--window--bottom: var(--chat--spacing);
+  --chat--window--right: var(--chat--spacing);
+  --chat--window--z-index: 9999;
+  --chat--window--border: none;
+  --chat--window--border-radius: 1.5rem;
+  --chat--window--margin-bottom: var(--chat--spacing);
+
+  /* Header – schwarz, zentriert, große Überschrift */
+  --chat--header-height: auto;
+  --chat--header--padding: 1rem 1.25rem 0.9rem;
+  --chat--header--background: #000000;
+  --chat--header--color: var(--chat--color-white);
+  --chat--header--border-top: none;
+  --chat--header--border-bottom: none;
+  --chat--header--border-left: none;
+  --chat--header--border-right: none;
+  --chat--heading--font-size: 1.7rem;
+  --chat--subtitle--font-size: 0.95rem;
+  --chat--subtitle--line-height: 1.6;
+
+  /* Nachrichten-Bubbles */
+  --chat--message--font-size: 0.95rem;
+  --chat--message--padding: 0.75rem 1rem;
+  --chat--message--border-radius: 1.25rem;
+  --chat--message-line-height: 1.5;
+  --chat--message--margin-bottom: calc(var(--chat--spacing) * 0.75);
+  --chat--message--bot--background: #f3f3f3;
+  --chat--message--bot--color: #111111;
+  --chat--message--bot--border: none;
+  --chat--message--user--background: #000000;
+  --chat--message--user--color: #ffffff;
+  --chat--message--user--border: none;
+  --chat--message--pre--background: #ececec;
+  --chat--messages-list--padding: calc(var(--chat--spacing) * 0.75);
+
+  /* Toggle-Button (Floating-Button) */
+  --chat--toggle--size: 70px;
+  --chat--toggle--width: var(--chat--toggle--size);
+  --chat--toggle--height: var(--chat--toggle--size);
+  --chat--toggle--border-radius: 50%;
+  --chat--toggle--background: #000000;
+  --chat--toggle--hover--background: #333333;
+  --chat--toggle--active--background: #111111;
+  --chat--toggle--color: var(--chat--color-white);
+
+  /* Eingabefeld */
+  --chat--textarea--height: 56px;
+  --chat--textarea--max-height: 30rem;
+  --chat--input--font-size: 0.95rem;
+  --chat--input--border: 0;
+  --chat--input--border-radius: 1rem;
+  --chat--input--padding: 0.8rem 1rem;
+  --chat--input--background: var(--chat--color-white);
+  --chat--input--text-color: initial;
+  --chat--input--line-height: 1.5;
+  --chat--input--placeholder--font-size: var(--chat--input--font-size);
+  --chat--input--border-active: 0;
+  --chat--input--left--panel--width: 2rem;
+
+  /* Buttons */
+  --chat--button--color: var(--chat--color-white);
+  --chat--button--background: #000000;
+  --chat--button--padding: 0.4rem 0.9rem;
+  --chat--button--border-radius: 999px;
+  --chat--button--hover--color: var(--chat--color-white);
+  --chat--button--hover--background: #333333;
+  --chat--close--button--color-hover: #ffffff;
+
+  /* Send / File Buttons */
+  --chat--input--send--button--background: transparent;
+  --chat--input--send--button--color: #000000;
+  --chat--input--send--button--background-hover: rgba(0, 0, 0, 0.04);
+  --chat--input--send--button--color-hover: #333333;
+  --chat--input--file--button--background: transparent;
+  --chat--input--file--button--color: #555555;
+  --chat--input--file--button--background-hover: transparent;
+  --chat--input--file--button--color-hover: #000000;
+  --chat--files-spacing: 0.25rem;
+
+  /* Hintergrund: Chat weiß */
+  --chat--body--background: #ffffff;
+  --chat--footer--background: #ffffff;
+  --chat--footer--color: var(--chat--color-dark);
+}
+
+/* Floating-Effekt für das Chatfenster */
+.chat-window,
+.chat-container {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+}
+
+/* Header: zentriert + bisschen Luft */
+.chat-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.35rem;
+}
+
+/* Auto-Logo im Header mit 360°-Drehung */
+.chat-header::before {
+  content: var(--chat--avatar-initial);
+  width: var(--chat--avatar-size);
+  height: var(--chat--avatar-size);
+  border-radius: 999px;
+  background: var(--chat--avatar-bg);
+  color: var(--chat--avatar-text-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  margin-bottom: 0.45rem;
+  animation: car-spin var(--chat--avatar-anim-duration) linear infinite;
+}
+
+/* Große Überschrift + Untertitel */
+.chat-header-title {
+  font-size: var(--chat--heading--font-size);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.chat-header-subtitle {
+  font-size: var(--chat--subtitle--font-size);
+  line-height: var(--chat--subtitle--line-height);
+  opacity: 0.9;
+  margin: 0 0 0.35rem;
+}
+
+/* Nachrichten-Bubbles */
+.chat-message {
+  max-width: 72%;
+  border-radius: 1.25rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.chat-message.bot {
+  position: relative;
+  border-bottom-left-radius: 0.4rem;
+}
+
+.chat-message.user {
+  margin-left: auto;
+  border-bottom-right-radius: 0.4rem;
+}
+
+/* Kleines Auto neben Bot-Nachrichten, ebenfalls drehend */
+.chat-message.bot::before {
+  content: var(--chat--avatar-initial);
+  position: absolute;
+  left: -0.3rem;
+  top: 0.6rem;
+  width: var(--chat--bot-avatar-size);
+  height: var(--chat--bot-avatar-size);
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--chat--avatar-text-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  animation: car-spin 4s linear infinite;
+}
+
+/* Quick-Reply Buttons als Pills */
+.chat-actions button,
+.chat-actions .chat-action {
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+/* 360°-Rotation für das Auto-Logo */
+@keyframes car-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Nur für Demo-Seite */
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  margin: 0;
+  padding: 2rem;
+}
+
+main {
+  max-width: 800px;
+}
+
+/* POPUP: Komplett weißes Helfer-Popup */
+/* Ändere das z-index des Popups auf höher als den Chat */
+.chat-helper-popover {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 6.0rem;
+  z-index: 9000; /* Erhöhe auf 10000 (höher als der Chat) */
+  background: #ffffff;
+  color: #111111;
+  border-radius: 1.1rem;
+  padding: 0.75rem 1.1rem 0.75rem 0.9rem;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  max-width: 260px;
+}
+
+/* Optional: Sicherstellen, dass das X klickbar ist */
+.chat-helper-popover-close {
+  cursor: pointer;
+  font-size: 1.2rem;
+  opacity: 0.75;
+  padding: 0 6px;
+  position: relative; /* Wichtig für z-index */
+  z-index: 10001; /* Noch höher */
+}
+
+
+.chat-helper-popover::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  right: 28px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #ffffff transparent transparent transparent;
+}
+
+.chat-helper-popover-icon {
+  font-size: 1.6rem;
+  animation: car-bounce 2.2s infinite ease-in-out;
+  display: flex;
+  align-items: center;
+}
+
+.chat-helper-popover-text {
+  flex: 1;
+  font-weight: 600;
+}
+
+.chat-helper-popover-close {
+  cursor: pointer;
+  font-size: 1.2rem;
+  opacity: 0.75;
+  padding: 0 6px;
+}
+
+.chat-helper-popover-close:hover {
+  opacity: 1;
+}
+
+@keyframes car-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-6px);
+  }
+  65% {
+    transform: translateY(-3px);
+  }
+}
+/* n8n „Powered by“-Footer verstecken */
+.chat-powered-by,
+.chat-get-started-footer .chat-powered-by {
+  display: none !important;
+}

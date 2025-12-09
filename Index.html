@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Fahrschule StadtDrive – Sophie Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- n8n Chat Basis-Styles -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css"
+      rel="stylesheet"
+    />
+
+    <!-- Dein eigenes CSS (muss im selben Ordner liegen wie index.html) -->
+    <!-- WICHTIG: ./style.css, nicht nur style.css -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <main>
+      <h1>Fahrschule StadtDrive</h1>
+      <p>
+        Willkommen! Unten rechts kannst du mit <strong>Sophie</strong> chatten,
+        Fragen stellen und direkt Termine buchen. 🚗
+      </p>
+    </main>
+
+    <!-- Helfer-Popup über der Chat-Bubble -->
+    <div
+      id="chat-helper-popover"
+      class="chat-helper-popover"
+    >
+      <span class="chat-helper-popover-icon">🚗</span>
+      <span class="chat-helper-popover-text">Hey, kann ich dir helfen?</span>
+      <span class="chat-helper-popover-close">✕</span>
+    </div>
+
+    <!-- n8n Chat Widget + Popup-Logik -->
+    <!-- WICHTIG: chat.js muss im selben Ordner liegen wie index.html -->
+      <!-- n8n Chat: offizieller Embed über CDN -->
+    <script type="module">
+      import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+      createChat({
+        webhookUrl: 'https://aminorino.app.n8n.cloud/webhook/11c77887-81e9-43ae-9ca8-502b038a213b/chat',
+        mode: 'window',
+        defaultLanguage: 'de',
+
+        initialMessages: [
+          '👋 Hallo! Ich bin Sophie, deine virtuelle Assistentin der Fahrschule.',
+          'Ich helfe dir bei Fragen zum Führerschein und bei der Terminbuchung. 😊'
+        ],
+
+        i18n: {
+          de: {
+            title: 'Fahrschule StadtDrive',
+            subtitle: 'Beratung & Terminbuchung',
+            footer: '',
+            getStarted: 'Neues Gespräch starten',
+            inputPlaceholder: 'Schreib mir deine Frage oder deinen Wunschtermin…'
+          }
+        },
+
+        typingIndicator: true,
+        chatButtonTitle: 'Frag Sophie 😊'
+      });
+
+      // Nach kurzer Zeit versuchen, die Chat-Bubble sichtbar zu machen
+      setTimeout(() => {
+        const chatToggle = document.querySelector('.n8n-chat-toggle');
+        if (chatToggle) {
+          chatToggle.style.display = 'block';
+          console.log('Chat-Toggle-Button gefunden');
+        } else {
+          console.warn('Chat-Toggle-Button nicht gefunden');
+        }
+      }, 1500);
+    </script>
+
+    <!-- Dein eigenes JS NUR für das Pop-up -->
+    <script src="./chat.js"></script>
+  </body>
+</html>
+
+
+  </body>
+</html>
+
